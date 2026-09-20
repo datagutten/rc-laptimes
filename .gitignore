@@ -1,7 +1,5 @@
-/vendor/
-/config.php
-
 .idea
-clover.xml
-coverage_html
-.phpunit.result.cache
+__pycache__
+poetry.lock
+postgres_data
+.env

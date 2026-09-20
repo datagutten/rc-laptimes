@@ -1,0 +1,58 @@
+services:
+  laptimes:
+    restart: always
+    build: .
+    depends_on:
+    - postgres
+    env_file:
+    - .env
+    entrypoint: python /app/manage.py
+
+  web: &base
+    restart: always
+    build: .
+    depends_on:
+    - postgres
+    env_file:
+    - .env
+
+  saver_buggy:
+    <<: *base
+    command: python /app/manage.py saver 2
+
+  saver_track:
+    <<: *base
+    command: python /app/manage.py saver 1
+
+  postgres:
+    image: postgres:18
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    volumes:
+    - ./postgres_data:/var/lib/postgresql/18/docker
+    environment:
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DATABASE}
+    ports:
+    - "10.5.11.11:5432:5432"
+
+  nginx:
+    build:
+      context: nginx
+    #      additional_contexts:
+    #        ghcr.io/datagutten/rclaptimes: laptimes
+    depends_on:
+    - web
+    ports:
+    - "8000:80"
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+    - postgres
+
+    ports:
+    - 8080:8080

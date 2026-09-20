@@ -1,15 +1,21 @@
-FROM php:8.3
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+FROM python:3.14 AS builder
+WORKDIR /app
+COPY pyproject.toml .
 
-RUN apt-get update && apt-get install -y libzip-dev
-RUN docker-php-ext-install sockets pdo_mysql zip
+RUN pip install --upgrade pip poetry poetry-plugin-export
+
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes --with openstint --with mylaps
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+FROM python:3.14-slim
+COPY --from=builder /app/wheels /wheels
+
+RUN pip install --no-cache /wheels/*
 
 WORKDIR /app
-COPY composer.json .
-COPY src src
-COPY scripts scripts
-COPY config_env.php config.php
+COPY laptimes /app/laptimes
+COPY rclaptimes /app/rclaptimes
+COPY web /app/web
+COPY . /app
 
-RUN composer update
-
-CMD php scripts/passing_saver env
+CMD gunicorn
