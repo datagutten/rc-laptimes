@@ -28,7 +28,9 @@ class MyLapsPassingSaver(PassingSaver):
             response = self.socket.recv(1024)
             self.buffer += response
             if self.buffer.find(b'\x8e') is not None and self.buffer.find(b'\x8f') is not None:
-                return self.buffer  # Return when there is a valid record in the buffer
+                data = self.buffer  # Return when there is a valid record in the buffer
+                self.buffer = b''
+                return data
 
     def read(self):
         data = self._read()
