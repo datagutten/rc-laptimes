@@ -3,6 +3,13 @@
 import os
 import sys
 
+try:
+    import dotenv
+
+    dotenv.load_dotenv(dotenv.find_dotenv())
+except ImportError:
+    pass
+
 
 def main():
     """Run administrative tasks."""
