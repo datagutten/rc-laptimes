@@ -8,7 +8,7 @@ RUN cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -B build .
 RUN ninja -C build
 
 FROM debian:trixie-slim
-RUN apt-get update && apt-get -y install libusb-1.0.0-dev libzmq3-dev cppzmq-dev libliquid-dev libfec-dev
+RUN apt-get update && apt-get -y install libusb-1.0.0-dev libzmq3-dev cppzmq-dev libliquid-dev libfec-dev && apt clean
 COPY --from=build /openstint/build /openstint
 COPY --from=build /openstint/integrations /openstint/integrations
 CMD /openstint/src/openstint_rtlsdr -s /rc4 -t
