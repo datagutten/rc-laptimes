@@ -8,6 +8,12 @@ class DecoderAdmin(admin.ModelAdmin):
     list_display = ['name', 'ip', 'decoder_type']
 
 
+@admin.register(models.Lap)
+class LapAdmin(admin.ModelAdmin):
+    list_display = ['decoder', 'transponder', 'lap_time_ms', 'lap_time', 'start', 'end']
+    list_filter = ['decoder', 'transponder', 'lap_time']
+
+
 @admin.register(models.Passing)
 class PassingAdmin(admin.ModelAdmin):
     list_display = ['decoder', 'transponder', 'timestamp', 'time']

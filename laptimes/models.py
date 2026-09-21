@@ -43,9 +43,43 @@ class Passing(models.Model):
         ordering = ['-timestamp']
 
 
+class Lap(models.Model):
+    decoder = models.ForeignKey(Decoder, on_delete=models.CASCADE, related_name='laps')
+    transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='laps')
+    passing1 = models.OneToOneField(Passing, on_delete=models.CASCADE, related_name='lap')
+    passing2 = models.OneToOneField(Passing, on_delete=models.CASCADE, related_name='lap2')
+    lap_time_ms = models.IntegerField()
+    lap_time = models.DurationField()
+
+    class Meta:
+        get_latest_by = ['passing1__start_time']
+
+    @property
+    def best_time(self) -> Lap:
+        return self.transponder.days_best(self.passing1.time.date())
+
+    @property
+    def start(self):
+        return self.passing1.time
+
+    @property
+    def end(self):
+        return self.passing2.time
+
+    @property
+    def css_class(self):
+        if self.best_time.lap_time == self.lap_time:
+            return 'best-time'
+        else:
+            return ''
+
+    def __str__(self):
+        return f'{self.transponder} {self.passing1.time} {self.lap_time}'
+
+
 class Session(models.Model):
     transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='sessions')
-    passings = models.ManyToManyField(Passing)
+    laps = models.ManyToManyField(Lap)
 
     def best_lap(self):
         raise NotImplementedError()
