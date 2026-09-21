@@ -27,7 +27,7 @@ jobs:
         echo "openstint_version=${openstint_version}" >> $GITHUB_OUTPUT
 
   build:
-    name: Build and push Docker Images
+    name: Build and push release Docker Image
     runs-on: ubuntu-latest
     if: ${{ needs.getversion.outputs.build-version != '' }}
     needs: getversion
@@ -55,6 +55,14 @@ jobs:
         tags: |
           ghcr.io/datagutten/openstint:${{ needs.getversion.outputs.build-version }}
           ghcr.io/datagutten/openstint:latest
+
+  build_dev:
+    name: Build and push development Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v7
 
     - name: Build and push development Docker image
       uses: docker/build-push-action@v7
