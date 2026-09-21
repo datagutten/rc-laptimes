@@ -1,4 +1,6 @@
+import datetime
 import logging
+import math
 import socket
 
 from ambp3parser.record import AMBRecord, Passing
@@ -42,9 +44,11 @@ class MyLapsPassingSaver(PassingSaver):
             passing_obj = models.Passing(
                 decoder=self.decoder,
                 timestamp=record.RTC_TIME / 1000,
+                time=datetime.datetime.fromtimestamp(record.RTC_TIME / math.pow(1000, 2)),
                 signal=record.STRENGTH,
                 hit_count=record.HITS,
                 transponder=self.transponder('AMB', record.TRANSPONDER),
                 raw_data=record.data,
             )
             passing_obj.save()
+            print(passing_obj)
