@@ -1,0 +1,32 @@
+Updated: {{ time }}
+<table class="laps">
+    <tr>
+        {% if config.show_avatars or config.show_nickname %}
+            <th>Driver</th>
+        {% endif %}
+        <th>Transponder</th>
+        <th>Last lap</th>
+        <!--<th>Session best</th>-->
+        <th>Days best</th>
+        <th>Start time</th>
+    </tr>
+    {% for lap in laps %}
+        <tr class="{{ lap.css_class }}">
+            {% if config.show_avatars %}
+                <td class="avatarnick">
+                    <img src="{{ lap.avatar }}" alt="avatar" class="avatar"/>
+                </td>
+            {% endif %}
+            {% if config.show_nickname and lap.transponder.name %}
+                <td class="transponder">{{ lap.transponder.name }}</td>
+                <td class="transponder">{{ lap.transponder.number }}</td>
+            {% else %}
+                <td class="transponder">{{ lap.transponder.number }}</td>
+            {% endif %}
+            <td>{{ lap.lap_time }}</td>
+            <!--<td></td>-->
+            <td>{{ lap.best_time.lap_time|default:'' }}</td>
+            <td title="{{ lap.passing1.time.isoformat }}">{{ lap.passing1.time|date:"H:i" }}</td>
+        </tr>
+    {% endfor %}
+</table>

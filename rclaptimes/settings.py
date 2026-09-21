@@ -126,6 +126,8 @@ USE_TZ = False
 
 STATIC_ROOT = BASE_DIR.joinpath('static')
 STATIC_URL = 'static/'
+MEDIA_ROOT = BASE_DIR.joinpath('media')
+MEDIA_URL = 'media/'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration

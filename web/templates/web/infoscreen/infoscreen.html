@@ -1,0 +1,25 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block head %}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{% static 'web/infoscreen.js' %}"></script>
+    <link href="{% static 'web/infoscreen.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+    <span id="time"></span>
+    <div id="laps" data-refresh="{{ config.refresh_interval }}"></div>
+    {% if config.disable_button %}
+        <span id="disable_refresh">Disable refresh</span>
+    {% endif %}
+
+    <div>
+        <dl id="laptimeslegend">
+            <dt class="faster"> Laptime is faster than previous laptime</dt>
+            <dd></dd>
+            <dt class="slower"> Laptime is slower than previous laptime</dt>
+            <dd></dd>
+            <dt class="best-time"> Best laptime</dt>
+            <dd></dd>
+        </dl>
+    </div>
+{% endblock %}
