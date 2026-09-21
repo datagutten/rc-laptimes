@@ -19,6 +19,7 @@ class Transponder(models.Model):
     number = models.BigIntegerField()
     name = models.CharField(blank=True, null=True)
     transponder_type = models.TextField()
+    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
 
     def __str__(self):
         return f'{self.transponder_type}: {self.name or self.number}'
