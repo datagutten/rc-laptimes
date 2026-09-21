@@ -11,6 +11,8 @@ dependencies = [
     "django (>=6.1.1,<7.0.0)",
     "psycopg2-binary (>=2.9.13,<3.0.0)",
     "gunicorn (>=26.2.0,<27.0.0)",
+    "requests (>=2.34.2,<3.0.0)",
+    "pillow (>=12.3.0,<13.0.0)",
 ]
 
 
@@ -23,5 +25,12 @@ openstint = [
     "pyzmq (>=27.2.0,<28.0.0)"
 ]
 mylaps = [
-    "ambp3parser @ git+https://github.com/datagutten/amb-p3-parser.git"
+    "ambp3parser @ git+https://github.com/datagutten/amb-p3-parser.git",
+    "lxml (>=6.1.3,<7.0.0)"
+]
+dev = [
+    "python-dotenv (>=1.2.3,<2.0.0)"
+]
+web = [
+    "django-bootstrap5 (>=26.3,<27.0)"
 ]
