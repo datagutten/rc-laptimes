@@ -54,4 +54,12 @@ jobs:
           OPENSTINT_VERSION=${{env.OPENSTINT_VERSION}}
         tags: |
           ghcr.io/datagutten/openstint:${{ needs.getversion.outputs.build-version }}
-        labels: ${{ steps.meta.outputs.labels }}
+          ghcr.io/datagutten/openstint:latest
+
+    - name: Build and push development Docker image
+      uses: docker/build-push-action@v7
+      with:
+        context: openstint
+        push: true
+        tags: |
+          ghcr.io/datagutten/openstint:development
