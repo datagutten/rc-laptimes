@@ -9,6 +9,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 
 FROM python:3.14-slim
 COPY --from=builder /app/wheels /wheels
+ENV PYTHONDONTWRITEBYTECODE=1
 
 RUN pip install --no-cache /wheels/* && rm -R /wheels
 
@@ -16,6 +17,6 @@ WORKDIR /app
 COPY laptimes /app/laptimes
 COPY rclaptimes /app/rclaptimes
 COPY web /app/web
-COPY . /app
+COPY *.py /app
 
 CMD gunicorn
