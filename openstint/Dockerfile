@@ -1,6 +1,6 @@
+FROM debian:trixie AS build
 ARG OPENSTINT_VERSION=master
 
-FROM debian:trixie AS build
 RUN apt-get update && apt-get -y install build-essential cmake ninja-build git pkg-config libusb-1.0-0-dev libzmq3-dev cppzmq-dev libliquid-dev libfec-dev
 RUN git clone https://github.com/zsellera/openstint --branch $OPENSTINT_VERSION --depth 1
 WORKDIR /openstint
