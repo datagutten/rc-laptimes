@@ -1,7 +1,7 @@
-from decimal import Decimal
+import datetime
 
 from django.db import models
-import datetime
+from django.db.models import Avg, Sum, Min
 
 
 class Decoder(models.Model):
@@ -10,6 +10,8 @@ class Decoder(models.Model):
     name = models.CharField(blank=True, null=True)
     decoder_type = models.CharField(choices=(('mylaps', 'MyLaps'), ('openstint', 'OpenStint')))
     enabled = models.BooleanField(default=True)
+    min_lap_time = models.IntegerField(blank=True, null=True, help_text='Minimum lap time (seconds)')
+    max_lap_time = models.IntegerField(blank=True, null=True, help_text='Maximum lap time (seconds)')
 
     def __str__(self):
         return self.name or self.ip
@@ -27,6 +29,9 @@ class Transponder(models.Model):
     def display(self):
         return self.name or self.number
 
+    def days_best(self, day: datetime.date):
+        return self.laps.filter(passing1__time__date=day).order_by('lap_time').first()
+
 
 class Passing(models.Model):
     time = models.DateTimeField(blank=True, null=True)
@@ -38,6 +43,9 @@ class Passing(models.Model):
     voltage = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     temperature = models.IntegerField(blank=True, null=True)
     raw_data = models.BinaryField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.transponder} {self.timestamp}'
 
     class Meta:
         ordering = ['-timestamp']
@@ -52,7 +60,7 @@ class Lap(models.Model):
     lap_time = models.DurationField()
 
     class Meta:
-        get_latest_by = ['passing1__start_time']
+        get_latest_by = ['passing1__time']
 
     @property
     def best_time(self) -> Lap:
@@ -79,13 +87,25 @@ class Lap(models.Model):
 
 class Session(models.Model):
     transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='sessions')
+    date = models.DateField(blank=True, null=True)
     laps = models.ManyToManyField(Lap)
 
+    @property
+    def start_time(self):
+        return self.laps.first().passing1.time
+
+    @property
+    def lap_count(self):
+        return self.laps.count()
+
     def best_lap(self):
-        raise NotImplementedError()
+        return self.laps.all().aggregate(Min('lap_time'))['lap_time__min']
 
     def avg_lap(self):
-        raise NotImplementedError()
+        return self.laps.all().aggregate(Avg('lap_time'))['lap_time__avg']
 
     def median_lap(self):
         raise NotImplementedError()
+
+    def total_time(self):
+        return self.laps.all().aggregate(Sum('lap_time'))['lap_time__sum']

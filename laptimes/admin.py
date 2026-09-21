@@ -24,3 +24,9 @@ class PassingAdmin(admin.ModelAdmin):
 class TransponderAdmin(admin.ModelAdmin):
     list_display = ['number', 'name', 'transponder_type']
     list_filter = ['transponder_type']
+
+
+@admin.register(models.Session)
+class SessionAdmin(admin.ModelAdmin):
+    list_display = ['transponder', 'start_time', 'lap_count', 'total_time', 'best_lap', 'avg_lap']
+    list_filter = ['transponder']
