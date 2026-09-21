@@ -1,3 +1,5 @@
+import datetime
+
 import zmq
 
 from laptimes import models
@@ -31,9 +33,11 @@ class OpenStintPassingSaver(PassingSaver):
             passing_obj = models.Passing(
                 decoder=self.decoder,
                 timestamp=timecode,
+                time=datetime.datetime.fromtimestamp(timecode / 1000),
                 signal=rssi,
                 hit_count=hit_count,
-                transponder=self.transponder(transponder_type, transponder_id)
+                transponder=self.transponder(transponder_type, transponder_id),
+                raw_data=msg.encode(),
             )
             passing_obj.save()
 

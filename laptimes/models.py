@@ -28,6 +28,7 @@ class Transponder(models.Model):
 
 
 class Passing(models.Model):
+    time = models.DateTimeField(blank=True, null=True)
     timestamp = models.BigIntegerField(help_text='Milliseconds since 1970-01-01')
     decoder = models.ForeignKey(Decoder, on_delete=models.CASCADE, related_name='passings')
     transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='passings')
@@ -35,10 +36,10 @@ class Passing(models.Model):
     hit_count = models.IntegerField()
     voltage = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     temperature = models.IntegerField(blank=True, null=True)
+    raw_data = models.BinaryField(blank=True, null=True)
 
-    @property
-    def datetime(self):
-        return datetime.datetime.fromtimestamp(self.timestamp / 1000)
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class Session(models.Model):

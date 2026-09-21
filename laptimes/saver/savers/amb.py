@@ -45,5 +45,6 @@ class MyLapsPassingSaver(PassingSaver):
                 signal=record.STRENGTH,
                 hit_count=record.HITS,
                 transponder=self.transponder('AMB', record.TRANSPONDER),
+                raw_data=record.data,
             )
             passing_obj.save()

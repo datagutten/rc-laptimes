@@ -10,9 +10,8 @@ class DecoderAdmin(admin.ModelAdmin):
 
 @admin.register(models.Passing)
 class PassingAdmin(admin.ModelAdmin):
-    list_display = ['decoder', 'transponder', 'timestamp', 'datetime']
-    list_filter = ['decoder', 'transponder']
-    readonly_fields = ['datetime']
+    list_display = ['decoder', 'transponder', 'timestamp', 'time']
+    list_filter = ['decoder', 'transponder', 'time']
 
 
 @admin.register(models.Transponder)
