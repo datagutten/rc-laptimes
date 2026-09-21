@@ -10,7 +10,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.t
 FROM python:3.14-slim
 COPY --from=builder /app/wheels /wheels
 
-RUN pip install --no-cache /wheels/*
+RUN pip install --no-cache /wheels/* && rm -R /wheels
 
 WORKDIR /app
 COPY laptimes /app/laptimes
