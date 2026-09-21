@@ -61,5 +61,7 @@ jobs:
       with:
         context: openstint
         push: true
+        build-args: |
+          OPENSTINT_VERSION=master
         tags: |
           ghcr.io/datagutten/openstint:development
