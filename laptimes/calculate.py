@@ -1,5 +1,7 @@
 import datetime
+from zoneinfo import ZoneInfo
 
+from django.conf import settings
 from django.db import IntegrityError
 
 from laptimes import models
@@ -18,6 +20,10 @@ def laptimes(decoder: int = None):
         passings = passings.filter(decoder_id=decoder)
     previous_passing: dict[str, models.Passing] = {}
     for passing in passings:
+        if passing.time is None:
+            passing.time = datetime.datetime.fromtimestamp(passing.timestamp / 1000)
+            passing.save()
+
         next_passing = previous_passing.get(passing.transponder)
         if next_passing is not None and next_passing.timestamp != passing.timestamp:
             diff = lap_time(passing, next_passing, passing.decoder.min_lap_time, passing.decoder.max_lap_time)
@@ -71,3 +77,13 @@ def create_sessions(decoder: int = None):
         previous_laps[transponder] = lap
     for transponder_id, laps in session_laps.items():
         save_session(laps)
+
+
+def convert_mylaps_time(timestamp: int):
+    """
+    MyLaps timestamp seems to be two hours off, local time?
+    """
+    tz = ZoneInfo(settings.TIME_ZONE)
+    time_obj = datetime.datetime.fromtimestamp(timestamp / 1000, tz)
+    time_obj_utc = time_obj.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+    return time_obj_utc
