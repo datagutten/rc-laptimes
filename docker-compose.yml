@@ -1,14 +1,6 @@
 services:
-  laptimes:
-    restart: always
-    build: .
-    depends_on:
-    - postgres
-    env_file:
-    - .env
-    entrypoint: python /app/manage.py
-
   web: &base
+    image: ghcr.io/datagutten/rclaptimes:latest
     restart: always
     build: .
     depends_on:
