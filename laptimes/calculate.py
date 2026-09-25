@@ -21,7 +21,7 @@ def laptimes(decoder: int = None):
     previous_passing: dict[str, models.Passing] = {}
     for passing in passings:
         if passing.time is None:
-            passing.time = datetime.datetime.fromtimestamp(passing.timestamp / 1000)
+            passing.time = convert_mylaps_time(passing.timestamp)
             passing.save()
 
         next_passing = previous_passing.get(passing.transponder)
