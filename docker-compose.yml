@@ -40,6 +40,14 @@ services:
     ports:
     - "8000:80"
 
+  openstint:
+    image: ghcr.io/datagutten/openstint:latest
+    restart: always
+    devices:
+    - "/dev/bus/usb:/dev/bus/usb"
+    volumes:
+    - ./rc4:/rc4
+
   adminer:
     image: adminer
     restart: always
