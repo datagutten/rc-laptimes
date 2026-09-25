@@ -48,6 +48,17 @@ services:
     volumes:
     - ./rc4:/rc4
 
+  tracktiming:
+    build: tracktiming
+    restart: always
+    environment:
+      OPENSTINT_HOST: openstint
+    ports:
+    - "8002:80"
+    volumes:
+    - ./tracktiming_data:/data
+    - ./rc4:/opt/openstint
+
   adminer:
     image: adminer
     restart: always
