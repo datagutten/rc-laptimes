@@ -1,0 +1,9 @@
+{% load static %}
+{% if passing.transponder.avatar %}
+    <img src="{{ passing.avatar }}" alt="avatar" class="avatar"/>
+{% else %}
+    <img src="{% static 'web/avatar_fallback.png' %}" alt="default avatar" class="avatar">
+{% endif %}
+{% if passing.transponder_name is defined %}
+    {{ passing.transponder.name }}
+{% endif %}

@@ -1,6 +1,8 @@
-{% extends 'web/base.html' %}
+{% extends 'web/base_bootstrap.html' %}
+{% load static %}
 {% block body %}
-    <table>
+    <table class="table table-striped">
+        <thead>
         <tr>
             <th>Time</th>
             <th>Number</th>
@@ -10,25 +12,27 @@
             <th>Flags</th>
             <th>Diff</th>
         </tr>
+        </thead>
+        <tbody>
         {% for passing in passings %}
             <tr>
-                <td>{{ passing.time|date:'Y-m-d H:i' }}</td>
+                <td title="{{ passing.timestamp }}">{{ passing.time|date:'Y-m-d H:i' }}</td>
                 <td>{{ passing.transponder.number }}</td>
-                <td><a href="?decoder={{ passing.decoder }}&amp;transponder={{ passing.transponder_num }}">{{ passing.transponder_num }}</a></td>
-                {% if passing.transponder_name is defined %}
-                    <td class="avatarnick"><img src="{{ passing.avatar }}" alt="avatar" class="avatar"/>{{ passing.transponder.name }}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                <td>
+                    <a href="?decoder={{ passing.decoder }}&amp;transponder={{ passing.transponder_num }}">{{ passing.transponder_num }}</a>
+                </td>
+                <td>{% include 'web/include/avatarnick.html' %}</td>
                 <td>
                     <meter value="{{ passing.signal }}"
                            min="40" max="150" low="60" high="100" optimum="130"
                            style="width: 100px; height: 1.3em"
-                    >{{ passing.signal }}</meter> {{ passing.signal }}</td>
+                    >{{ passing.signal }}</meter>
+                    {{ passing.signal }}</td>
                 <td>{{ passing.hit_count }}</td>
                 <td>{{ passing.flags }}</td>
                 <td>{{ passing.diff }}</td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ config.title }}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link href="{% static 'web/laptimes.css' %}" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+</body>
+</html>
