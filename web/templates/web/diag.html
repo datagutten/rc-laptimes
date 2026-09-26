@@ -21,7 +21,7 @@
                 <td>
                     <a href="?decoder={{ passing.decoder }}&amp;transponder={{ passing.transponder_num }}">{{ passing.transponder_num }}</a>
                 </td>
-                <td>{% include 'web/include/avatarnick.html' %}</td>
+                <td>{% include 'web/include/avatarnick.html' with transponder=passing.transponder %}</td>
                 <td>
                     <meter value="{{ passing.signal }}"
                            min="40" max="150" low="60" high="100" optimum="130"

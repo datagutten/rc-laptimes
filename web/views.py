@@ -49,6 +49,7 @@ def sessions(request):
     return render(request, 'web/sessions.html', {
         'decoders': models.Decoder.objects.filter(enabled=True),
         'sessions': sessions_obj,
+        'transponder': sessions_obj[0].transponder,
         # .order_by('-passing1__timestamp')[:50],
         'time': datetime.datetime.now().strftime('%H:%M:%S'),
     })

@@ -1,6 +1,6 @@
 {% load static %}
-{% if passing.transponder.avatar %}
-    <img src="{{ passing.avatar }}" alt="avatar" class="avatar"/>
+{% if transponder.avatar %}
+    <img src="{{ transponder.avatar.url }}" alt="avatar" class="avatar"/>
 {% else %}
     <img src="{% static 'web/avatar_fallback.png' %}" alt="default avatar" class="avatar">
 {% endif %}
