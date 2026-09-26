@@ -10,8 +10,8 @@ class Decoder(models.Model):
     name = models.CharField(blank=True, null=True)
     decoder_type = models.CharField(choices=(('mylaps', 'MyLaps'), ('openstint', 'OpenStint')))
     enabled = models.BooleanField(default=True)
-    min_lap_time = models.IntegerField(blank=True, null=True, help_text='Minimum lap time (seconds)')
-    max_lap_time = models.IntegerField(blank=True, null=True, help_text='Maximum lap time (seconds)')
+    min_lap_time = models.IntegerField(default=10, help_text='Minimum lap time (seconds)')
+    max_lap_time = models.IntegerField(default=30, help_text='Maximum lap time (seconds)')
 
     def __str__(self):
         return self.name or self.ip
