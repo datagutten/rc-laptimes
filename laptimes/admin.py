@@ -5,7 +5,8 @@ from laptimes import models
 
 @admin.register(models.Decoder)
 class DecoderAdmin(admin.ModelAdmin):
-    list_display = ['name', 'ip', 'decoder_type']
+    list_display = ['name', 'ip', 'decoder_type', 'min_lap_time', 'max_lap_time']
+    list_filter = ['decoder_type']
 
 
 @admin.register(models.Lap)
@@ -29,4 +30,4 @@ class TransponderAdmin(admin.ModelAdmin):
 @admin.register(models.Session)
 class SessionAdmin(admin.ModelAdmin):
     list_display = ['transponder', 'start_time', 'lap_count', 'total_time', 'best_lap', 'avg_lap']
-    list_filter = ['transponder']
+    list_filter = ['laps__decoder', 'transponder']
