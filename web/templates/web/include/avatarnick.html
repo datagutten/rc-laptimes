@@ -4,6 +4,8 @@
 {% else %}
     <img src="{% static 'web/avatar_fallback.png' %}" alt="default avatar" class="avatar">
 {% endif %}
-{% if passing.transponder_name is defined %}
-    {{ passing.transponder.name }}
+{% if transponder.name %}
+    {{ transponder.name }}
+{% else %}
+    {{ transponder.number }}
 {% endif %}
