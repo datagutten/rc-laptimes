@@ -15,7 +15,7 @@ def lap_time(passing1: models.Passing, passing2: models.Passing, min_limit=10, m
 
 
 def laptimes(decoder: int = None):
-    passings = models.Passing.objects.all().order_by('-timestamp').filter(lap=None)
+    passings = models.Passing.objects.filter(lap=None).select_related('decoder').order_by('-timestamp')
     if decoder:
         passings = passings.filter(decoder_id=decoder)
     previous_passing: dict[str, models.Passing] = {}
@@ -24,7 +24,7 @@ def laptimes(decoder: int = None):
             passing.time = convert_mylaps_time(passing.timestamp)
             passing.save()
 
-        next_passing = previous_passing.get(passing.transponder)
+        next_passing = previous_passing.get(passing.transponder_id)
         if next_passing is not None and next_passing.timestamp != passing.timestamp:
             diff = lap_time(passing, next_passing, passing.decoder.min_lap_time, passing.decoder.max_lap_time)
             if diff is None:
@@ -32,7 +32,7 @@ def laptimes(decoder: int = None):
 
             lap_obj = models.Lap(
                 decoder=passing.decoder,
-                transponder=passing.transponder,
+                transponder_id=passing.transponder_id,
                 passing1=passing,
                 passing2=next_passing,
                 lap_time_ms=diff,
@@ -46,8 +46,8 @@ def laptimes(decoder: int = None):
                 continue
             pass
 
-        if not next_passing or passing.timestamp != previous_passing[passing.transponder].timestamp:
-            previous_passing[passing.transponder] = passing
+        if not next_passing or passing.timestamp != previous_passing[passing.transponder_id].timestamp:
+            previous_passing[passing.transponder_id] = passing
     pass
 
 
