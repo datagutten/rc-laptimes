@@ -76,6 +76,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rclaptimes.wsgi.application'
 
+DEBUG_TOOLBAR = os.environ.get("DJANGO_DEBUG_TOOLBAR", False)
+
+if DEBUG_TOOLBAR:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
