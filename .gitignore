@@ -5,3 +5,4 @@ postgres_data
 .env
 media
 /static
+*.json
