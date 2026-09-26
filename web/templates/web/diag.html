@@ -1,11 +1,14 @@
 {% extends 'web/base_bootstrap.html' %}
 {% load static %}
+{% block navbar_extra %}
+    {% include 'web/dropdowns/decoder.html' %}
+{% endblock %}
 {% block body %}
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Time</th>
-            <th>Number</th>
+            <th title="Transponder type">Type</th>
             <th colspan="2">Transponder</th>
             <th>Strength</th>
             <th>Hits</th>
@@ -17,10 +20,11 @@
         {% for passing in passings %}
             <tr>
                 <td title="{{ passing.timestamp }}">{{ passing.time|date:'Y-m-d H:i' }}</td>
-                <td>{{ passing.transponder.number }}</td>
+                <td>{{ passing.transponder.transponder_type }}</td>
                 <td>
-                    <a href="?decoder={{ passing.decoder }}&amp;transponder={{ passing.transponder_num }}">{{ passing.transponder_num }}</a>
+                    <a href="?decoder={{ passing.decoder_id }}&amp;transponder={{ passing.transponder.number }}">{{ passing.transponder.number }}</a>
                 </td>
+
                 <td>{% include 'web/include/avatarnick.html' with transponder=passing.transponder %}</td>
                 <td>
                     <meter value="{{ passing.signal }}"

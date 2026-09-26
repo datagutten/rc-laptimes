@@ -60,7 +60,8 @@ def diag(request):
     if not decoder:
         return select_decoder(request, 'laptimes:diag')
     return render(request, 'web/diag.html', {
-        'passings': models.Passing.objects.filter(decoder_id=decoder)[:50],
+        'decoders': models.Decoder.objects.filter(enabled=True),
+        'passings': models.Passing.objects.select_related('transponder').filter(decoder_id=decoder)[:100],
         'config': config,
     })
 
