@@ -62,6 +62,7 @@ def save_session(laps):
 def create_sessions(decoder: int = None):
     previous_laps = {}
     session_laps = {}
+    laptimes(decoder)
     for lap in models.Lap.objects.filter(session=None).order_by('passing1__time'):
         transponder = lap.transponder_id
         previous_lap = previous_laps.get(transponder)
