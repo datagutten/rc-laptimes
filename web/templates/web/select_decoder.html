@@ -1,0 +1,21 @@
+{% extends 'web/base_bootstrap.html' %}
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>IP</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for decoder in decoders %}
+            <tr>
+                <td><a href="{% url page %}?decoder={{ decoder.id }}">{{ decoder.name }}</a></td>
+            <td>{{ decoder.ip }}</td>
+            <td>{{ decoder.decoder_type }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render
 
-from laptimes import models
+from laptimes import models, calculate
 
 config = {
     'round_limit': 20,  # Number of rounds to show
@@ -16,6 +16,13 @@ config = {
 
 # Create your views here.
 def index(request):
+    return render(request, 'web/index.html')
+
+
+def infoscreen(request):
+    decoder = request.GET.get('decoder')
+    if not decoder:
+        return select_decoder(request, 'infoscreen')
     return render(request, 'web/infoscreen/infoscreen.html',
                   {
                       'config': config,
@@ -24,6 +31,7 @@ def index(request):
 
 def laps(request):
     decoder = request.GET.get('decoder')
+    calculate.laptimes(decoder)
     return render(request, 'web/infoscreen/table.html', {
         'laps': models.Lap.objects.filter(decoder_id=decoder).order_by('-passing1__timestamp')[:50],
         'time': datetime.datetime.now().strftime('%H:%M:%S'),
@@ -31,9 +39,30 @@ def laps(request):
     })
 
 
+def sessions(request):
+    decoder = request.GET.get('decoder')
+    if not decoder:
+        return select_decoder(request, 'laptimes:sessions')
+    calculate.create_sessions(decoder)
+    transponder = int(request.GET.get('transponder', 9654075))
+    sessions_obj = models.Session.objects.filter(transponder__number=transponder)
+    return render(request, 'web/sessions.html', {
+        'decoders': models.Decoder.objects.filter(enabled=True),
+        'sessions': sessions_obj,
+        # .order_by('-passing1__timestamp')[:50],
+        'time': datetime.datetime.now().strftime('%H:%M:%S'),
+    })
+
+
 def diag(request):
     decoder = request.GET.get('decoder')
+    if not decoder:
+        return select_decoder(request, 'laptimes:diag')
     return render(request, 'web/diag.html', {
         'passings': models.Passing.objects.filter(decoder_id=decoder)[:50],
         'config': config,
     })
+
+
+def select_decoder(request, page: str):
+    return render(request, 'web/select_decoder.html', {'decoders': models.Decoder.objects.all(), 'page': page})

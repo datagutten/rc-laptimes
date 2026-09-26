@@ -1,0 +1,28 @@
+{% extends 'web/base_bootstrap.html' %}
+{% block  navbar_extra %}
+    {% include 'web/dropdowns/decoder.html' %}
+{% endblock %}
+{% block body %}
+    {% for session in sessions %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th colspan="4">{{ session.laps.first.start }}</th>
+            </tr>
+            <tr>
+                <th>Lap</th>
+                <th>Total Time</th>
+                <th>Lap Time</th>
+                <th>Diff</th>
+            </tr>
+            </thead>
+            {% for lap in session.laps.all %}
+                <tr>
+                    <td>{{ lap.lap_time }}</td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+
+{% endblock %}

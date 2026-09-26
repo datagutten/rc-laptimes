@@ -1,0 +1,12 @@
+{% extends 'web/base_bootstrap.html' %}
+{% block body %}
+    <a href="{% url 'laptimes:laps' %}">
+        <button class="btn btn-primary">Lap times</button>
+    </a>
+    <a href="{% url 'laptimes:sessions' %}">
+        <button class="btn btn-primary">Sessions</button>
+    </a>
+    <a href="{% url 'laptimes:diag' %}">
+        <button class="btn btn-primary">Passing diagnostics</button>
+    </a>
+{% endblock %}

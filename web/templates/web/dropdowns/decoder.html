@@ -1,0 +1,13 @@
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Decoder
+    </a>
+    <ul class="dropdown-menu">
+        {% for decoder in decoders %}
+            <li><a class="dropdown-item"
+                   href="?decoder={{ decoder.id }}">{{ decoder.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</li>
