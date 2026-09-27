@@ -8,6 +8,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('decoder', nargs='?', type=str)
+        parser.add_argument('transponder', nargs='?', type=str)
 
     def handle(self, *args, **options):
-        calculate.laptimes(options['decoder'])
+        calculate.laptimes(options['decoder'], options['transponder'])
