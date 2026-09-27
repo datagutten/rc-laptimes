@@ -34,7 +34,8 @@ class Transponder(models.Model):
 
 
 class Passing(models.Model):
-    time = models.DateTimeField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True, help_text='Passing time from decoder')
+    saved_time = models.DateTimeField(auto_now_add=True, help_text='Passing time from server')
     timestamp = models.BigIntegerField(help_text='Milliseconds since 1970-01-01')
     decoder = models.ForeignKey(Decoder, on_delete=models.CASCADE, related_name='passings')
     transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='passings')
