@@ -86,9 +86,13 @@ class Lap(models.Model):
 
 
 class Session(models.Model):
+    decoder = models.ForeignKey(Decoder, on_delete=models.CASCADE, related_name='sessions')
     transponder = models.ForeignKey(Transponder, on_delete=models.CASCADE, related_name='sessions')
-    date = models.DateField(blank=True, null=True)
+    start = models.DateTimeField(blank=True, null=True)
     laps = models.ManyToManyField(Lap)
+
+    class Meta:
+        ordering = ['start']
 
     @property
     def start_time(self):

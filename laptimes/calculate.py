@@ -51,7 +51,11 @@ def laptimes(decoder: int = None, transponder_id: int = None):
 
 
 def save_session(laps):
-    session_obj = models.Session(transponder_id=laps[0].transponder_id, date=laps[0].passing1.time.date())
+    session_obj = models.Session(
+        decoder=laps[0].decoder,
+        transponder_id=laps[0].transponder_id,
+        start=laps[0].passing1.time
+    )
     session_obj.save()
     for session_lap in laps:
         session_obj.laps.add(session_lap)
