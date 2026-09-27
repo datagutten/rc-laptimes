@@ -43,8 +43,10 @@ def sessions(request):
     decoder = request.GET.get('decoder')
     if not decoder:
         return select_decoder(request, 'laptimes:sessions')
-    calculate.create_sessions(decoder)
+
     transponder = int(request.GET.get('transponder', 9654075))
+    transponder_obj = models.Transponder.objects.get(number=transponder)
+    calculate.create_sessions(decoder, transponder_obj.id)  # transponder_number=transponder)
     sessions_obj = models.Session.objects.filter(transponder__number=transponder)
     return render(request, 'web/sessions.html', {
         'decoders': models.Decoder.objects.filter(enabled=True),
