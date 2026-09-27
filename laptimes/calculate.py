@@ -14,10 +14,12 @@ def lap_time(passing1: models.Passing, passing2: models.Passing, min_limit=10, m
     return round_time
 
 
-def laptimes(decoder: int = None):
+def laptimes(decoder: int = None, transponder_id: int = None):
     passings = models.Passing.objects.filter(lap=None).select_related('decoder').order_by('-timestamp')
     if decoder:
         passings = passings.filter(decoder_id=decoder)
+    if transponder_id:
+        passings = passings.filter(transponder_id=transponder_id)
     previous_passing: dict[str, models.Passing] = {}
     for passing in passings:
         if passing.time is None:
@@ -56,11 +58,17 @@ def save_session(laps):
     return session_obj
 
 
-def create_sessions(decoder: int = None):
+def create_sessions(decoder: int = None, transponder_id: int = None):
     previous_laps = {}
     session_laps = {}
-    laptimes(decoder)
-    for lap in models.Lap.objects.filter(session=None).order_by('passing1__time'):
+    laptimes(decoder, transponder_id)
+    laps = models.Lap.objects.filter(session=None).order_by('passing1__time')
+    if decoder:
+        laps = laps.filter(decoder_id=decoder)
+    if transponder_id:
+        laps = laps.filter(transponder_id=transponder_id)
+
+    for lap in laps:
         transponder = lap.transponder_id
         previous_lap = previous_laps.get(transponder)
         session_laps.setdefault(transponder, []).append(lap)
