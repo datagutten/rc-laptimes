@@ -8,7 +8,7 @@ $(document).ready(function () {
 function update() {
     const urlParams = new URLSearchParams(window.location.search);
     const decoder = urlParams.get('decoder');
-    $("#laps").load("laps?decoder=" + decoder);
+    $("#laps").load("infoscreen_table?decoder=" + decoder);
 }
 
 function disable_refresh() {

@@ -1,0 +1,26 @@
+{% extends 'web/base_bootstrap.html' %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Decoder</th>
+            <th>Transponder</th>
+            <th>Lap time</th>
+            <th>Start time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lap in laps %}
+            <tr class="{{ lap.css_class }}">
+                <td>{{ lap.decoder.name }}</td>
+                <td>{% include 'web/include/avatarnick.html' with transponder=lap.transponder %}</td>
+                <td>{{ lap.lap_time }}</td>
+                <td>{{ lap.start|date:"H:i:s.u" }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}
