@@ -8,18 +8,24 @@
         <table class="table">
             <thead>
             <tr>
-                <th colspan="4">{{ session.laps.first.start }}</th>
+                <th class="bg-primary">Start: {{ session.laps.first.start }}</th>
+                <th class="bg-primary">Total time: {{ session.total_time }}</th>
+                <th class="bg-primary">Best lap: {{ session.best_lap }}</th>
+                <th class="bg-primary">Average lap: {{ session.avg_lap }}</th>
             </tr>
             <tr>
-                <th>Lap</th>
-                <th>Total Time</th>
-                <th>Lap Time</th>
-                <th>Diff</th>
+                <th class="bg-secondary">Lap</th>
+                <th class="bg-secondary">Total Time</th>
+                <th class="bg-secondary">Lap Time</th>
+                <th class="bg-secondary">Diff</th>
             </tr>
             </thead>
             {% for lap in session.laps.all %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td></td>
                     <td>{{ lap.lap_time }}</td>
+                    <td></td>
 
                 </tr>
             {% endfor %}
