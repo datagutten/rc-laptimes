@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from laptimes import calculate
+from laptimes import calculate, models
 
 
 class Command(BaseCommand):
@@ -10,4 +10,8 @@ class Command(BaseCommand):
         parser.add_argument('decoder', nargs='?', type=str)
 
     def handle(self, *args, **options):
-        calculate.create_sessions(options['decoder'])
+        if not options['decoder']:
+            for decoder in models.Decoder.objects.filter(enabled=True):
+                calculate.create_sessions(decoder.id)
+        else:
+            calculate.create_sessions(options['decoder'])
