@@ -27,24 +27,21 @@ def laptimes(decoder: int = None):
         next_passing = previous_passing.get(passing.transponder_id)
         if next_passing is not None and next_passing.timestamp != passing.timestamp:
             diff = lap_time(passing, next_passing, passing.decoder.min_lap_time, passing.decoder.max_lap_time)
-            if diff is None:
-                continue
+            if diff is not None:
+                lap_obj = models.Lap(
+                    decoder=passing.decoder,
+                    transponder_id=passing.transponder_id,
+                    passing1=passing,
+                    passing2=next_passing,
+                    lap_time_ms=diff,
+                    lap_time=datetime.timedelta(milliseconds=diff),
+                )
 
-            lap_obj = models.Lap(
-                decoder=passing.decoder,
-                transponder_id=passing.transponder_id,
-                passing1=passing,
-                passing2=next_passing,
-                lap_time_ms=diff,
-                lap_time=datetime.timedelta(milliseconds=diff),
-            )
-
-            try:
-                print(lap_obj)
-                lap_obj.save()
-            except IntegrityError:
-                continue
-            pass
+                try:
+                    print(lap_obj)
+                    lap_obj.save()
+                except IntegrityError:
+                    pass
 
         if not next_passing or passing.timestamp != previous_passing[passing.transponder_id].timestamp:
             previous_passing[passing.transponder_id] = passing
