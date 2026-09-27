@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 )
 
                 image_url = f"https://usersandproducts-api.speedhive.com/api/v2/image/id/{activity['gaUId']}"
-                if not transponder.avatar:
+                if not transponder.avatar or not os.path.exists(transponder.avatar.path):
                     response = requests.get(image_url)
                     if response.status_code == 200:
                         transponder.avatar.save(f'{transponder.number}.png', ContentFile(response.content), save=True)
