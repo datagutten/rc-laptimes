@@ -11,4 +11,7 @@ FROM debian:trixie-slim
 RUN apt-get update && apt-get -y install libusb-1.0.0-dev libzmq3-dev cppzmq-dev libliquid-dev libfec-dev && apt clean
 COPY --from=build /openstint/build /openstint
 COPY --from=build /openstint/integrations /openstint/integrations
+WORKDIR /openstint/src
+#RUN make install
+RUN rm -R /openstint/src/_dept/hackrf-src
 CMD /openstint/src/openstint_rtlsdr -s /rc4 -t

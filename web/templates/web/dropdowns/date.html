@@ -1,0 +1,13 @@
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Date
+    </a>
+    <ul class="dropdown-menu">
+        {% for date in dates %}
+            <li><a class="dropdown-item"
+                   href="?decoder={{ decoder.id }}">{{ decoder.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</li>
