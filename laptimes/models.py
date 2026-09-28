@@ -48,6 +48,12 @@ class Passing(models.Model):
     def __str__(self):
         return f'{self.transponder} {self.timestamp}'
 
+    def raw(self):
+        if self.decoder.decoder_type == 'openstint':
+            return bytes(self.raw_data).decode()
+        else:
+            return ''
+
     class Meta:
         ordering = ['-timestamp']
 

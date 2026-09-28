@@ -19,6 +19,7 @@ class LapAdmin(admin.ModelAdmin):
 class PassingAdmin(admin.ModelAdmin):
     list_display = ['decoder', 'transponder', 'timestamp', 'time']
     list_filter = ['decoder', 'transponder', 'time']
+    readonly_fields = ['raw']
 
 
 @admin.register(models.Transponder)
