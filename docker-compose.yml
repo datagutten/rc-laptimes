@@ -3,6 +3,8 @@ services:
     image: ghcr.io/datagutten/rclaptimes:latest
     restart: always
     build: .
+    volumes:
+    - ./media:/app/media
     depends_on:
     - postgres
     env_file:
@@ -33,8 +35,8 @@ services:
   nginx:
     build:
       context: nginx
-    #      additional_contexts:
-    #        ghcr.io/datagutten/rclaptimes: laptimes
+    volumes:
+    - ./media:/home/app/media
     depends_on:
     - web
     ports:
