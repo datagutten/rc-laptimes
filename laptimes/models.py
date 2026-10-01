@@ -30,7 +30,7 @@ class Transponder(models.Model):
         return self.name or self.number
 
     def days_best(self, day: datetime.date):
-        return self.laps.filter(passing1__time__date=day).order_by('lap_time').first()
+        return self.laps.filter(passing1__saved_time__date=day).order_by('lap_time').first()
 
 
 class Passing(models.Model):
@@ -71,7 +71,7 @@ class Lap(models.Model):
 
     @property
     def best_time(self) -> Lap:
-        return self.transponder.days_best(self.passing1.time.date())
+        return self.transponder.days_best(self.passing1.saved_time.date())
 
     @property
     def start(self):
