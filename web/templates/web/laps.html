@@ -16,7 +16,7 @@
                 <td>{{ lap.decoder.name }}</td>
                 <td>{% include 'web/include/avatarnick.html' with transponder=lap.transponder %}</td>
                 <td>{{ lap.lap_time }}</td>
-                <td>{{ lap.start|date:"H:i:s.u" }}</td>
+                <td title="{{ lap.start.isoformat }}">{{ lap.start|date:"H:i:s" }}</td>
             </tr>
 
         {% endfor %}
