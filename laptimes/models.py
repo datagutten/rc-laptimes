@@ -75,11 +75,11 @@ class Lap(models.Model):
 
     @property
     def start(self):
-        return self.passing1.time
+        return self.passing1.saved_time
 
     @property
     def end(self):
-        return self.passing2.time
+        return self.passing2.saved_time
 
     @property
     def css_class(self):
