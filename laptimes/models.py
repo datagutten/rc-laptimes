@@ -89,7 +89,7 @@ class Lap(models.Model):
             return ''
 
     def __str__(self):
-        return f'{self.transponder} {self.passing1.time} {self.lap_time}'
+        return f'{self.transponder} {self.passing1.saved_time} {self.lap_time}'
 
 
 class Session(models.Model):

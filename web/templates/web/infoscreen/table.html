@@ -26,7 +26,7 @@ Updated: {{ time }}
             <td>{{ lap.lap_time }}</td>
             <!--<td></td>-->
             <td>{{ lap.best_time.lap_time|default:'' }}</td>
-            <td title="{{ lap.passing1.time.isoformat }}">{{ lap.passing1.time|date:"H:i" }}</td>
+            <td title="{{ lap.passing1.saved_time.isoformat }}">{{ lap.passing1.saved_time|date:"H:i" }}</td>
         </tr>
     {% endfor %}
 </table>

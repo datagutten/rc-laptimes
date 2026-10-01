@@ -22,10 +22,6 @@ def laptimes(decoder: int = None, transponder_id: int = None):
         passings = passings.filter(transponder_id=transponder_id)
     previous_passing: dict[str, models.Passing] = {}
     for passing in passings:
-        if passing.time is None:
-            passing.time = convert_mylaps_time(passing.timestamp)
-            passing.save()
-
         next_passing = previous_passing.get(passing.transponder_id)
         if next_passing is not None and next_passing.timestamp != passing.timestamp:
             diff = lap_time(passing, next_passing, passing.decoder.min_lap_time, passing.decoder.max_lap_time)

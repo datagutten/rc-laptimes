@@ -19,7 +19,7 @@
         <tbody>
         {% for passing in passings %}
             <tr>
-                <td title="{{ passing.timestamp }}">{{ passing.time|date:'Y-m-d H:i' }}</td>
+                <td title="{{ passing.timestamp }}">{{ passing.saved_time|date:'Y-m-d H:i' }}</td>
                 <td>{{ passing.transponder.transponder_type }}</td>
                 <td>
                     <a href="?decoder={{ passing.decoder_id }}&amp;transponder={{ passing.transponder.number }}">{{ passing.transponder.number }}</a>
