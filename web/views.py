@@ -33,7 +33,7 @@ def infoscreen_table(request):
     decoder = request.GET.get('decoder')
     calculate.laptimes(decoder)
     return render(request, 'web/infoscreen/table.html', {
-        'laps': models.Lap.objects.filter(decoder_id=decoder).order_by('-passing1__timestamp')[:50],
+        'laps': models.Lap.objects.filter(decoder_id=decoder)[:50],
         'time': datetime.datetime.now().strftime('%H:%M:%S'),
         'config': config,
     })
@@ -43,7 +43,7 @@ def laps(request):
     decoder = request.GET.get('decoder')
     limit = int(request.GET.get('limit', 50))
     calculate.laptimes(decoder)
-    laps_obj = models.Lap.objects.select_related('decoder', 'transponder').all().order_by('-passing1__time')
+    laps_obj = models.Lap.objects.select_related('decoder', 'transponder').all()
     if decoder:
         laps_obj = laps_obj.filter(decoder_id=decoder)
 

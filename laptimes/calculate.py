@@ -15,7 +15,7 @@ def lap_time(passing1: models.Passing, passing2: models.Passing, min_limit=10, m
 
 
 def laptimes(decoder: int = None, transponder_id: int = None):
-    passings = models.Passing.objects.filter(lap=None).select_related('decoder').order_by('-timestamp')
+    passings = models.Passing.objects.filter(lap=None).select_related('decoder')
     if decoder:
         passings = passings.filter(decoder_id=decoder)
     if transponder_id:
@@ -36,7 +36,6 @@ def laptimes(decoder: int = None, transponder_id: int = None):
                 )
 
                 try:
-                    print(lap_obj)
                     lap_obj.save()
                 except IntegrityError:
                     pass
@@ -62,7 +61,7 @@ def create_sessions(decoder: int, transponder_id: int = None):
     previous_laps = {}
     session_laps = {}
     laptimes(decoder, transponder_id)
-    laps = models.Lap.objects.filter(session=None).order_by('passing1__time')
+    laps = models.Lap.objects.filter(session=None).order_by('passing1__saved_time')
     laps = laps.filter(decoder_id=decoder)
     if transponder_id:
         laps = laps.filter(transponder_id=transponder_id)

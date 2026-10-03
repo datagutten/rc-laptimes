@@ -67,6 +67,7 @@ class Lap(models.Model):
     lap_time = models.DurationField()
 
     class Meta:
+        ordering = ['-passing1__saved_time']
         get_latest_by = ['passing1__saved_time']
 
     @property
